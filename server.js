@@ -1,31 +1,27 @@
+
+require('dotenv').config()
 const express =require('express')
 const app =express()
 const mongoose =require('mongoose')
+const Product =require('./models/productModels')
+const PORT=process.env.PORT
+const MONGO_URL=process.env.MONGO_URL
+const productRoute=require('./Route/productRoute');
 /// declare routh 
-app.use(express.json())
-app.get('/',(req,res)=>{
-    res.send('Hello Node Api')
-})
 
-app.get('/post',(req,res)=>{
-    res.send('we love food')
-})
+app.use('/api/',productRoute);
 
-app.post('/product',(req,res)=>{
-    console.log(req.body);
-    res.send(req.body)
-})
 mongoose.set('strictQuery',false)
-mongoose.connect('mongodb+srv://kcquansah:ashesi2023@userap.pczw6sm.mongodb.net/Node-Api?retryWrites=true&w=majority')
+mongoose.connect(MONGO_URL)
 .then(()=>
 {
   
     
  console.log('Connected to MongoDB')   
- app.listen(3500,()=>{
-    console.log(`Node Api app is runnng on port 3000`)
+ app.listen(PORT,()=>{
+    console.log(`Node Api app is runnng on port ${PORT}`)
 })
 }
-).catch(()=>{
-    console.log(eror)
+).catch((error)=>{
+    console.log(error)
 })
