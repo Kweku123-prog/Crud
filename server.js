@@ -7,10 +7,13 @@ const Product =require('./models/productModels')
 const PORT=process.env.PORT
 const MONGO_URL=process.env.MONGO_URL
 const productRoute=require('./Route/productRoute');
+const errorMiddleware=require('./errorMddleware/errorMddleware.js')
 /// declare routh 
 
-app.use('/api/',productRoute);
-
+//declare json middleware
+app.use(express.json())
+app.use('/api/product',productRoute);
+app.use(errorMiddleware)
 mongoose.set('strictQuery',false)
 mongoose.connect(MONGO_URL)
 .then(()=>
