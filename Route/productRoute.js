@@ -1,36 +1,27 @@
 const express =require('express')
 const Product =require('../models/productModels')
 const router=express.Router();
-const {getProducts, deleteProduct, postProduct, getProductById} =require('../controller/productController')
-
+const {getProducts, deleteProduct, postProduct, getProductById,updateProduct} =require('../controller/productController')
+const {login,register,getUsers, profile} =require('../controller/userController');
+const { validateToken } = require('../JWT');
 
 router.post('/',postProduct)
 router.delete('/:id',deleteProduct)
 router.get( "/", getProducts)
 
+router.post('/register',register )
+
+router.post('/login',login )
+router.get('/profile',profile )
+
 
 
 router.get("/:id",getProductById
 )
-
+router.get('/register',getUsers)
 //update 
 
-router.put('/:id', async(req,res)=>{
-
-    try {
-        const {id}=req.params;
-        const product=await Product.findByIdAndUpdate(id,req.body);
-       
-        if(!product){
-            return res.status(404).json({message:`cannot find any product with ${id}`})
-        }
-        const updatedProduct =await Product.findById(id);
-        res.status(200).json(updatedProduct);
-    } catch (error) {
-        res.status(500).json({message:error.message})
-    }
-
-})
+router.put('/:id', updateProduct)
 
 
 module.exports=router;
